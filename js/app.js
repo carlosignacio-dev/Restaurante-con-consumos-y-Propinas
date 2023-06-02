@@ -16,8 +16,26 @@ function guardarCliente() {
     const camposVacios = [ mesa, hora ].some(campo => campo === "");
 
     if(camposVacios) {
-        console.log("Si hay campos vacios");
-    } else {
-        console.log("Todos los campos estan llenos");
+        //Verificar si existe alerta
+        const existeAlerta = document.querySelector(".invalid-feedback");
+        if(!existeAlerta) {
+            const alerta = document.createElement("DIV");
+            alerta.classList.add("invalid-feedback", "d-block", "text-center");
+            alerta.textContent = "Todos los campos son obligatorios";
+            document.querySelector(".modal-body form").appendChild(alerta);
+
+            setTimeout(() => {
+                alerta.remove();
+            }, 2500);
+        }
+        return;
     }
+    
+    //asignar datos de formulario a cliente
+    cliente = { ...cliente, mesa, hora };
+
+    //Ocultar Modal
+    const modalFormulario = document.querySelector("#formulario");
+    const modalBootstrap = bootstrap.Modal.getInstance(modalFormulario);
+    modalBootstrap.hide();
 }
