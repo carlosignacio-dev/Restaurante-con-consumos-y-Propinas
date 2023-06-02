@@ -41,9 +41,37 @@ function guardarCliente() {
 
     //Mostrar secciones
     mostrarSecciones();
+
+    //Obtener Platillos de la API de JSON server
+    obtenerPlatillos();
 }
 
 function mostrarSecciones() {
     const seccionesOcultas = document.querySelectorAll(".d-none");
     seccionesOcultas.forEach(seccion => seccion.classList.remove("d-none"));
+}
+
+function obtenerPlatillos() {
+    const url = "http://localhost:4000/platillos";
+
+    fetch(url)
+        .then(respuesta => respuesta.json())
+        .then(resultado => mostrarPlatillos(resultado))
+        .then(error => console.log(error))
+}
+
+function mostrarPlatillos(platillos) {
+    const contenido = document.querySelector("#platillos .contenido");
+
+    platillos.forEach(platillo => {
+        const row = document.createElement("DIV");
+        row.classList.add("row");
+
+        const nombre = document.createElement("DIV");
+        nombre.classList.add("col-md-4");
+        nombre.textContent = platillo.nombre;
+
+        row.appendChild(nombre);
+        contenido.appendChild(row);
+    });
 }
